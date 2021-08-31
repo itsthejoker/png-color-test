@@ -1,0 +1,113 @@
+<html lang="en">
+<head>
+    <title>A lovely little test page!</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+          crossorigin="anonymous"
+    >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"
+    ></script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h3>Original image that should be hidden:</h3>
+            <p>
+                <img id="testImage" width="386" height="395" src="test%20png.png">
+            </p>
+        </div>
+        <div class="col">
+            <h3>Copied image with modifications:</h3>
+            <p>
+                <canvas id="canvas" width="386" height="395"></canvas>
+                <span id="hexValue">Calculating...</span>
+            </p>
+        </div>
+    </div>
+    <div class="redSlider">
+        Red:
+        <input type="range" width="100%" min="0" max="255" value="100" class="slider" id="redSlider">
+    </div>
+    <div class="blueSlider">
+        Blue:
+        <input type="range" width="100%" min="0" max="255" value="100" class="slider" id="blueSlider">
+    </div>
+    <div class="greenSlider">
+        Green:
+        <input type="range" width="100%" min="0" max="255" value="100" class="slider" id="greenSlider">
+    </div>
+</div>
+
+
+<script>
+    // heavy inspiration from http://jsfiddle.net/k3u78fsn/4/
+    function updateImage(context) {
+        let imgd = context.getImageData(0, 0, 386, 395);
+        let pix = imgd.data;
+        // Loops through all of the pixels and modifies the components.
+        for (var i = 0, n = pix.length; i < n; i += 4) {
+            pix[i] = lastKnownColor[0]
+            pix[i + 1] = lastKnownColor[2]
+            pix[i + 2] = lastKnownColor[1]
+            //pix[i+3] is the transparency.
+        }
+        context.putImageData(imgd, 0, 0);
+        updateHexValue(...lastKnownColor)
+    }
+
+    function componentToHex(c) {
+        var hex = c.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+        return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function updateHexValue(red, blue, green) {
+        let field = document.getElementById("hexValue");
+        field.innerText = rgbToHex(red, green, blue);
+    }
+
+    // start with grey default
+    lastKnownColor = [100, 100, 100]  // red, blue, green
+    window.addEventListener('load', function () {
+        var canvas = document.getElementById("canvas"),
+            ctx = canvas.getContext("2d"),
+            image = document.getElementById("testImage");
+
+        ctx.drawImage(image, 0, 0);
+        updateImage(ctx, 0, 0, 100, 100, 100);
+    })
+
+    const redSlide = document.getElementById('redSlider');
+    redSlide.onchange = function () {
+        let ctx = canvas.getContext("2d");
+        lastKnownColor[0] = parseInt(this.value);
+        updateImage(ctx);
+    }
+    const blueSlide = document.getElementById('blueSlider');
+    blueSlide.onchange = function () {
+        let ctx = canvas.getContext("2d");
+        lastKnownColor[1] = parseInt(this.value);
+        updateImage(ctx);
+    }
+    const greenSlide = document.getElementById('greenSlider');
+    greenSlide.onchange = function () {
+        let ctx = canvas.getContext("2d");
+        lastKnownColor[2] = parseInt(this.value);
+        updateImage(ctx);
+    }
+</script>
+
+</body>
+</html>
