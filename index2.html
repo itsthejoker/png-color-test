@@ -28,7 +28,7 @@
 
     <div id="imgcontainer" style="display: none"></div>
 
-    <div class="row mt-5">
+    <div class="row mt-5 mb-5">
         <div class="col-0 col-lg-3 col-xl-4"></div>
         <div class="col-6 col-lg-3 col-xl-2">
             <div class="d-flex justify-content-center">
@@ -84,6 +84,54 @@
 </div>
 
 <script>
+    // The way that this works is by taking an image on the page, grabbing its content,
+    // and mirroring it to a layered canvas. We have eight layers, of which seven are
+    // modifiable. The overall goal is to change the color of an arbitrary layer
+    // by way of a color selector.
+    //
+    // This script has two distinct parts: the setup and usage.
+    // Setup:
+    // * Iterate through the data object and create images under the hidden "imgcontainer"
+    // * Iterate through the data object and create canvases for each layer
+    // * Assign each layer a zIndex to make sure that they all show above the background
+    //   * Note: just creating the canvas doesn't show the image; we have to draw the image
+    //       onto the canvas in the next step.
+    // * Iterate through the data object and draw each layer
+    //
+    // When drawing the layer, we grab the canvas, grab the image data, set all the
+    // non-transparent pixels to the target RGB color, and then write the pixel data to the
+    // canvas. We only need to draw the layer once - after the first time, we can just take
+    // the information that's already there, modify it, and write it back.
+    //
+    // The second part is usage. The most difficult part of using the system is identifying
+    // which layer we're supposed to be modifying, which we do with radio buttons (taking
+    // advantage of the fact that only one can be selected at any given time). When the
+    // color picker is moved, we do a check on the radio buttons to see which one is
+    // selected. That radio button has a custom property (data-name) which matches the key
+    // of the layer in the data object. We:
+    // * grab the property from the radio button
+    // * look up the layer in the data object
+    // * set the layer's RGB color to the current RGB value of the color picker
+    // * grab the canvas
+    // * load all the pixel data from that canvas
+    // * iterate through the pixels, skipping all transparent ones, and set the color of the
+    //     pixel to the RGB color stored in the data object
+    // * write the pixel data to the canvas
+    //
+    // The last part is just a bit of fakery to make it a little more usable and look better.
+    // Each radio button has an onclick event that sets the color picker to the last known
+    // color for that layer when the button is selected, and we have to kickstart the picker
+    // with the current value of the first layer (the clamps) so that it will look right on
+    // page load.
+    //
+    // The biggest deficit of this approach is that the images are statically sized because
+    // of the canvas. I haven't yet identified how to scale them, but the Mozilla documentation
+    // recommends not scaling canvases when writing due to performance concerns. It seems like
+    // we might want to extend the data object to link to different sizes of images so that
+    // there can be a mobile version, a tablet version, and a desktop version (or something
+    // along those lines). Either way, it's a good start!
+
+
     let data = {
         'background': {
             'img': 'imgBase',
@@ -206,7 +254,6 @@
 
             // followings are optional properties and their default values.
             rgb: [255, 0, 0],
-            // hex: "#ff0000",
 
             // appearance
             wheelDiameter: 200,
