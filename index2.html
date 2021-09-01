@@ -28,7 +28,7 @@
 
     <div id="imgcontainer" style="display: none"></div>
 
-    <div class="row mt-5 mb-5">
+    <div class="row mt-5">
         <div class="col-0 col-lg-3 col-xl-4"></div>
         <div class="col-6 col-lg-3 col-xl-2">
             <div class="d-flex justify-content-center">
@@ -81,6 +81,15 @@
         </div>
         <div class="col-0 col-lg-3 col-xl-4"></div>
     </div>
+    <div class="row mb-5 mt-3">
+        <div class="col-0 col-md-4"></div>
+        <div class="col-12 col-md-4">
+            <div class="d-grid gap-2">
+                <button class="btn btn-primary" onclick="downloadCanvas();" type="button">Download Image</button>
+            </div>
+        </div>
+        <div class="col-0 col-md-4"></div>
+    </div>
 </div>
 
 <script>
@@ -131,8 +140,11 @@
     // there can be a mobile version, a tablet version, and a desktop version (or something
     // along those lines). Either way, it's a good start!
 
-
     let data = {
+        'download': {
+            'canvas': 'downloadCanvas',
+            'zIndex': -1
+        },
         'background': {
             'img': 'imgBase',
             'src': 'images/base_small.png',
@@ -190,8 +202,26 @@
         }
     }
 
+    function downloadCanvas() {
+        let canvases = []
+        for (const [key, value] of Object.entries(data)) {
+            canvases.push(getcanvas(key))
+        }
+        downloadcanvas = canvases.shift()  // remove and store first canvas
+        downloadctx = downloadcanvas.getContext("2d")
+        canvases.forEach(canvas => downloadctx.drawImage(canvas, 0, 0));
+        const link = document.createElement('a');
+        link.download = "custom_headphones.png";
+        link.href = downloadcanvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        link.click()
+    }
+
+    function getcanvas(layerId) {
+        return document.getElementById(data[layerId]['canvas'])
+    }
+
     function getctx(layerId) {
-        return document.getElementById(data[layerId]['canvas']).getContext("2d")
+        return getcanvas(layerId).getContext("2d")
     }
 
     function updateImage(layerId) {
@@ -229,10 +259,12 @@
     const imgContainer = document.getElementById('imgcontainer')
     const canvasContainer = document.getElementById('headphones')
     for (const [key, value] of Object.entries(data)) {
-        imgEl = document.createElement('img')
-        imgEl.setAttribute('src', value['src'])
-        imgEl.setAttribute('id', value['img'])
-        imgContainer.appendChild(imgEl)
+        if (value['img']) {
+            imgEl = document.createElement('img')
+            imgEl.setAttribute('src', value['src'])
+            imgEl.setAttribute('id', value['img'])
+            imgContainer.appendChild(imgEl)
+        }
 
         canvasEl = document.createElement('canvas');
         canvasEl.setAttribute('width', 697);
@@ -246,7 +278,9 @@
     const partOptions = document.getElementsByClassName('btn-check')
     window.addEventListener('load', function () {
         for (const [key, value] of Object.entries(data)) {
-            draw(key)
+            if (value['img']) {
+                draw(key)
+            }
         }
         colorWheel = new ReinventedColorWheel({
             // appendTo is the only required property. specify the parent element of the color wheel.
