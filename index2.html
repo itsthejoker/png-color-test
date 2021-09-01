@@ -1,0 +1,251 @@
+<html>
+<head>
+    <title>A second lovely little test page!</title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+          crossorigin="anonymous"
+    >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+            crossorigin="anonymous"
+    ></script>
+
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/reinvented-color-wheel@0.4.0/css/reinvented-color-wheel.min.css?1">
+    <script src="https://cdn.jsdelivr.net/npm/reinvented-color-wheel@0.4.0"></script>
+</head>
+<body>
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div id="headphones"></div>
+    </div>
+
+    <div id="imgcontainer" style="display: none"></div>
+
+    <div class="row mt-5">
+        <div class="col-0 col-lg-3 col-xl-4"></div>
+        <div class="col-6 col-lg-3 col-xl-2">
+            <div class="d-flex justify-content-center">
+                <div id="colorWheel"></div>
+            </div>
+            <div class="text-center mt-3">
+                <h1><span id="hexDisplay" class="badge bg-secondary">Loading...</span></h1>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3 col-xl-2">
+            <div class="text-center mt-3">
+                <div class="btn-group-vertical" id="partSelector" role="group"
+                     aria-label="Basic radio toggle button group">
+                    <input type="radio" data-name="clamps" onclick="resetColorWheel('clamps');" class="btn-check"
+                           name="btnradio" id="btnradio1"
+                           autocomplete="off" checked>
+                    <label class="btn btn-outline-primary" for="btnradio1">Clamps</label>
+
+                    <input type="radio" data-name="coneCenters" onclick="resetColorWheel('coneCenters');"
+                           class="btn-check" name="btnradio" id="btnradio2"
+                           autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio2">Cone Centers</label>
+
+                    <input type="radio" data-name="cones" onclick="resetColorWheel('cones');" class="btn-check"
+                           name="btnradio" id="btnradio3"
+                           autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio3">Cones</label>
+
+                    <input type="radio" data-name="covers" onclick="resetColorWheel('covers');" class="btn-check"
+                           name="btnradio" id="btnradio4"
+                           autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio4">Covers</label>
+
+                    <input type="radio" data-name="earpads" onclick="resetColorWheel('earpads');" class="btn-check"
+                           name="btnradio" id="btnradio5"
+                           autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio5">Earpads</label>
+
+                    <input type="radio" data-name="headband" onclick="resetColorWheel('headband');" class="btn-check"
+                           name="btnradio" id="btnradio6"
+                           autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio6">Headband</label>
+
+                    <input type="radio" data-name="spring" onclick="resetColorWheel('spring');" class="btn-check"
+                           name="btnradio" id="btnradio7"
+                           autocomplete="off">
+                    <label class="btn btn-outline-primary" for="btnradio7">Spring</label>
+                </div>
+            </div>
+        </div>
+        <div class="col-0 col-lg-3 col-xl-4"></div>
+    </div>
+</div>
+
+<script>
+    let data = {
+        'background': {
+            'img': 'imgBase',
+            'src': 'images/base_small.png',
+            'canvas': 'canvasBackground',
+            'zIndex': 0
+        },
+        'clamps': {
+            'img': 'imgClamps',
+            'src': 'images/clamps_small.png',
+            'canvas': 'canvasClamps',
+            'color': [0, 94, 157],
+            'zIndex': 1
+        },
+        'coneCenters': {
+            'img': 'imgConeCenters',
+            'src': 'images/cone_centers_small.png',
+            'canvas': 'canvasConeCenters',
+            'color': [255, 50, 206],
+            'zIndex': 2
+        },
+        'cones': {
+            'img': 'imgCones',
+            'src': 'images/cones_small.png',
+            'canvas': 'canvasCones',
+            'color': [58, 186, 255],
+            'zIndex': 3
+        },
+        'covers': {
+            'img': 'imgCovers',
+            'src': 'images/covers_small.png',
+            'canvas': 'canvasCovers',
+            'color': [10, 10, 10],
+            'zIndex': 4
+        },
+        'earpads': {
+            'img': 'imgEarpads',
+            'src': 'images/earpads_small.png',
+            'canvas': 'canvasEarpads',
+            'color': [10, 10, 10],
+            'zIndex': 5
+        },
+        'headband': {
+            'img': 'imgHeadband',
+            'src': 'images/headband_small.png',
+            'canvas': 'canvasHeadband',
+            'color': [88, 88, 88],
+            'zIndex': 6
+        },
+        'spring': {
+            'img': 'imgSpring',
+            'src': 'images/spring_small.png',
+            'canvas': 'canvasSpring',
+            'color': [255, 244, 104],
+            'zIndex': 7
+        }
+    }
+
+    function getctx(layerId) {
+        return document.getElementById(data[layerId]['canvas']).getContext("2d")
+    }
+
+    function updateImage(layerId) {
+        if (layerId === 'background') {
+            return
+        }
+        let ctx = getctx(layerId)
+        let imgd = ctx.getImageData(0, 0, 697, 697);
+        let pix = imgd.data;
+        // Loop through all the pixels and set the new color.
+        for (var i = 0, n = pix.length; i < n; i += 4) {
+            // only modify pixels that are not transparent
+            if (pix[i + 3] !== 0) {
+                pix[i] = data[layerId]['color'][0]
+                pix[i + 1] = data[layerId]['color'][1]
+                pix[i + 2] = data[layerId]['color'][2]
+                //pix[i+3] is the transparency.
+            }
+        }
+        ctx.putImageData(imgd, 0, 0);
+    }
+
+    function draw(layerId) {
+        let ctx = getctx(layerId)
+        let img = document.getElementById(data[layerId]["img"])
+        ctx.drawImage(img, 0, 0);
+        updateImage(layerId)
+    }
+
+    function resetColorWheel(layerId) {
+        colorWheel.rgb = data[layerId]['color'];
+        colorWheel.redraw()
+    }
+
+    const imgContainer = document.getElementById('imgcontainer')
+    const canvasContainer = document.getElementById('headphones')
+    for (const [key, value] of Object.entries(data)) {
+        imgEl = document.createElement('img')
+        imgEl.setAttribute('src', value['src'])
+        imgEl.setAttribute('id', value['img'])
+        imgContainer.appendChild(imgEl)
+
+        canvasEl = document.createElement('canvas');
+        canvasEl.setAttribute('width', 697);
+        canvasEl.setAttribute('height', 697);
+        canvasEl.setAttribute('id', value['canvas'])
+        canvasEl.style.zIndex = value['zIndex']
+        canvasContainer.appendChild(canvasEl);
+    }
+
+    const hexDisplay = document.getElementById('hexDisplay')
+    const partOptions = document.getElementsByClassName('btn-check')
+    window.addEventListener('load', function () {
+        for (const [key, value] of Object.entries(data)) {
+            draw(key)
+        }
+        colorWheel = new ReinventedColorWheel({
+            // appendTo is the only required property. specify the parent element of the color wheel.
+            appendTo: document.getElementById("colorWheel"),
+
+            // followings are optional properties and their default values.
+            rgb: [255, 0, 0],
+            // hex: "#ff0000",
+
+            // appearance
+            wheelDiameter: 200,
+            wheelThickness: 26,
+            handleDiameter: 20,
+            wheelReflectsSaturation: true,
+
+            // handler
+            onChange: function (color) {
+                hexDisplay.innerText = color.hex
+                for (var i = 0, length = partOptions.length; i < length; i++) {
+                    if (partOptions[i].checked) {
+                        // do whatever you want with the checked radio
+                        let layer = partOptions[i].getAttribute('data-name')
+                        data[layer]['color'] = color.rgb;
+                        updateImage(layer)
+                        // only one radio can be logically checked, don't check the rest
+                        break;
+                    }
+                }
+            },
+        });
+        // force the color wheel to the default checkbox
+        resetColorWheel('clamps')
+    });
+
+</script>
+
+
+<style>
+    #headphones {
+        width: 697px;
+        height: 697px;
+    }
+
+    #headphones canvas {
+        position: absolute;
+    }
+</style>
+
+</body>
+</html>
