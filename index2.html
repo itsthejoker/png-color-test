@@ -27,68 +27,147 @@
     </div>
 
     <div id="imgcontainer" style="display: none"></div>
-
-    <div class="row mt-5">
-        <div class="col-0 col-lg-3 col-xl-4"></div>
-        <div class="col-6 col-lg-3 col-xl-2">
-            <div class="d-flex justify-content-center">
-                <div id="colorWheel"></div>
-            </div>
-            <div class="text-center mt-3">
-                <h1><span id="hexDisplay" class="badge bg-secondary">Loading...</span></h1>
-            </div>
-        </div>
-        <div class="col-6 col-lg-3 col-xl-2">
-            <div class="text-center mt-3">
-                <div class="btn-group-vertical" id="partSelector" role="group"
-                     aria-label="Basic radio toggle button group">
-                    <input type="radio" data-name="clamps" onclick="resetColorWheel('clamps');" class="btn-check"
-                           name="btnradio" id="btnradio1"
-                           autocomplete="off" checked>
-                    <label class="btn btn-outline-primary" for="btnradio1">Clamps</label>
-
-                    <input type="radio" data-name="coneCenters" onclick="resetColorWheel('coneCenters');"
-                           class="btn-check" name="btnradio" id="btnradio2"
-                           autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio2">Cone Centers</label>
-
-                    <input type="radio" data-name="cones" onclick="resetColorWheel('cones');" class="btn-check"
-                           name="btnradio" id="btnradio3"
-                           autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio3">Cones</label>
-
-                    <input type="radio" data-name="covers" onclick="resetColorWheel('covers');" class="btn-check"
-                           name="btnradio" id="btnradio4"
-                           autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio4">Covers</label>
-
-                    <input type="radio" data-name="earpads" onclick="resetColorWheel('earpads');" class="btn-check"
-                           name="btnradio" id="btnradio5"
-                           autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio5">Earpads</label>
-
-                    <input type="radio" data-name="headband" onclick="resetColorWheel('headband');" class="btn-check"
-                           name="btnradio" id="btnradio6"
-                           autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio6">Headband</label>
-
-                    <input type="radio" data-name="spring" onclick="resetColorWheel('spring');" class="btn-check"
-                           name="btnradio" id="btnradio7"
-                           autocomplete="off">
-                    <label class="btn btn-outline-primary" for="btnradio7">Spring</label>
+    <div class="row mt-5 mb-5">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-0 col-lg-1"></div>
+                <div class="col-6 col-lg-5">
+                    <div class="d-flex justify-content-center">
+                        <div id="colorWheel"></div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <h1><span id="hexDisplay" class="badge bg-secondary">Loading...</span></h1>
+                    </div>
                 </div>
+                <div class="col-6 col-lg-5">
+                    <div class="text-center mt-3">
+                        <div class="btn-group-vertical" id="partSelector" role="group"
+                             aria-label="Basic radio toggle button group">
+                            <input type="radio" data-name="clamps" onclick="resetColorWheel('clamps');"
+                                   class="btn-check"
+                                   name="btnradio" id="btnradio1"
+                                   autocomplete="off" checked>
+                            <label class="btn btn-outline-primary" for="btnradio1">Clamps</label>
+
+                            <input type="radio" data-name="coneCenters" onclick="resetColorWheel('coneCenters');"
+                                   class="btn-check" name="btnradio" id="btnradio2"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio2">Cone Centers</label>
+
+                            <input type="radio" data-name="cones" onclick="resetColorWheel('cones');" class="btn-check"
+                                   name="btnradio" id="btnradio3"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio3">Cones</label>
+
+                            <input type="radio" data-name="covers" onclick="resetColorWheel('covers');"
+                                   class="btn-check"
+                                   name="btnradio" id="btnradio4"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio4">Covers</label>
+
+                            <input type="radio" data-name="earpads" onclick="resetColorWheel('earpads');"
+                                   class="btn-check"
+                                   name="btnradio" id="btnradio5"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio5">Earpads</label>
+
+                            <input type="radio" data-name="headband" onclick="resetColorWheel('headband');"
+                                   class="btn-check"
+                                   name="btnradio" id="btnradio6"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio6">Headband</label>
+
+                            <input type="radio" data-name="spring" onclick="resetColorWheel('spring');"
+                                   class="btn-check"
+                                   name="btnradio" id="btnradio7"
+                                   autocomplete="off">
+                            <label class="btn btn-outline-primary" for="btnradio7">Spring</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-0 col-lg-1"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-0 col-md-2"></div>
+                <div class="col-12 col-md-8">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" onclick="downloadCanvas();" type="button">Download Image
+                        </button>
+                    </div>
+                </div>
+                <div class="col-0 col-md-2"></div>
             </div>
         </div>
-        <div class="col-0 col-lg-3 col-xl-4"></div>
-    </div>
-    <div class="row mb-5 mt-3">
-        <div class="col-0 col-md-4"></div>
-        <div class="col-12 col-md-4">
-            <div class="d-grid gap-2">
-                <button class="btn btn-primary" onclick="downloadCanvas();" type="button">Download Image</button>
+        <div class="col-lg-6">
+            <div class="text-center">
+                <h2>Wanna make this for real? <span class="btn btn-primary" onclick="refreshTable();">Click here to refresh the table!</span>
+                </h2>
+                Here's what you'll need! Keep in mind that you'll need to use PETG or ABS for best results. Powered by
+                <a href="https://filamentcolors.xyz" target="_blank">Filamentcolors.xyz!</a>
             </div>
+            <div id="filamentTableLoadingScreen" class="position-relative">
+                <img id="spinner" src="images/swatch-loading-animation-try10.gif" class="position-absolute"
+                     style="left: 50%;transform: translate(-50%); display:none; z-index: 10">
+                <table id="filamentTable" class="table table-bordered mt-3 position-relative">
+                    <thead>
+                    <tr>
+                        <th scope="col">Part</th>
+                        <th scope="col">Filament</th>
+                        <th scope="col">Color</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr id="clampsRow">
+                        <th scope="row">Clamps</th>
+                        <td>Unknown</td>
+                        <td></td>
+                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                    </tr>
+                    <tr id="coneCentersRow">
+                        <th scope="row">Cone Centers</th>
+                        <td>Unknown</td>
+                        <td></td>
+                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                    </tr>
+                    <tr id="conesRow">
+                        <th scope="row">Cones</th>
+                        <td>Unknown</td>
+                        <td></td>
+                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                    </tr>
+                    <tr id="coversRow">
+                        <th scope="row">Covers</th>
+                        <td>Unknown</td>
+                        <td></td>
+                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                    </tr>
+                    <tr id="earpadsRow">
+                        <th scope="row">Earpads</th>
+                        <td>Unknown</td>
+                        <td></td>
+                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                    </tr>
+                    <tr id="headbandRow">
+                        <th scope="row">Headband</th>
+                        <td>Unknown</td>
+                        <td></td>
+                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                    </tr>
+                    <tr id="springRow">
+                        <th scope="row">Spring</th>
+                        <td>Unknown</td>
+                        <td></td>
+                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center">
+                <span class="text-muted">Buy links use Amazon Affliate links when available.</span>
+            </div>
+
         </div>
-        <div class="col-0 col-md-4"></div>
     </div>
 </div>
 
@@ -200,6 +279,85 @@
             'color': [255, 244, 104],
             'zIndex': 7
         }
+    }
+
+    // The API needs hex, but we deal pretty much exclusively here with RGB. We'll convert
+    // before we send out, then convert back to RGB when we get a response back.
+    // https://stackoverflow.com/a/39077686
+    const rgbToHex = (r, g, b) => [r, g, b].map(x => {
+        const hex = x.toString(16)
+        return hex.length === 1 ? '0' + hex : hex
+    }).join('')
+
+    const hexToRgb = hex =>
+        hex.replace(/^#?([a-f\d])([a-f\d])([a-f\d])$/i
+            , (m, r, g, b) => '#' + r + r + g + g + b + b)
+            .substring(1).match(/.{2}/g)
+            .map(x => parseInt(x, 16))
+
+    function refreshTable() {
+        // TODO: Ways to improve this function:
+        //
+        // * cache the time that a specific color was requested vs when the
+        //     button was pressed -- only request colors that have changed
+        //     since the button was last pressed
+        // * start with the colors of the predefined palette already built
+        //     so that the site doesn't have to handle the same palette over
+        //     and over
+
+        filamentTable = document.getElementById('filamentTable');
+        spinner = document.getElementById("spinner");
+        filamentTable.style.backgroundColor = "lightgray";
+        filamentTable.style.opacity = "40%";
+        spinner.style.display = null;
+
+        let colors = [];
+        for (key in data) {
+            if (data[key].hasOwnProperty('color')) {
+                colors.push(rgbToHex(...data[key]['color']))
+            }
+        }
+
+        fetch(`https://filamentcolors.xyz/api/swatch/bulk_colormatch/?colors=${colors.join(",")}`)
+            .then(response => response.json())
+            .then(respData => {
+                for (const [key, value] of Object.entries(respData)) {
+                    let color = hexToRgb("#" + key)
+                    for (layer in data) {
+                        if (data[layer].hasOwnProperty('color') === true) {
+                            // the fact that JS can't compare arrays by default is RIDICULOUS
+                            if (JSON.stringify(color) === JSON.stringify(data[layer]['color'])) {
+                                tableRow = document.getElementById(`${layer}Row`);
+                                filamentCell = tableRow.children[1];
+                                filamentColorCell = tableRow.children[2];
+                                buyButton = tableRow.children[3].children[0];
+
+                                filamentCell.innerHTML = `${value['manufacturer']['name']} ${value['color_name']} ${value['filament_type']['name']}`;
+                                filamentColorCell.style.backgroundColor = `#${value["hex_color"]}`;
+                                if (value['amazon_purchase_link']) {
+                                    buyButton.classList.remove('disabled');
+                                    buyButton.classList.remove('btn-secondary');
+                                    buyButton.classList.add('btn-primary');
+                                    buyButton.href = value['amazon_purchase_link'];
+                                } else if (value['mfr_purchase_link']) {
+                                    buyButton.classList.remove('disabled');
+                                    buyButton.classList.remove('btn-secondary');
+                                    buyButton.classList.add('btn-primary');
+                                    buyButton.href = value['mfr_purchase_link'];
+                                } else {
+                                    // We don't have any buy links for it.
+                                    buyButton.classList.add('disabled');
+                                    buyButton.classList.remove('btn-primary');
+                                    buyButton.classList.add('btn-secondary');
+                                }
+                            }
+                        }
+                    }
+                }
+                filamentTable.style.backgroundColor = "white";
+                filamentTable.style.opacity = 100;
+                spinner.style.display = "none";
+            });
     }
 
     function downloadCanvas() {
