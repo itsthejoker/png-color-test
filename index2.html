@@ -281,6 +281,76 @@
         }
     }
 
+    pageDefaultData = {
+        '0a0a0a': {
+            'color_name': 'Black',
+            'hex_color': '0B0B0B',
+            'amazon_purchase_link': 'https://www.amazon.com/gp/product/B07YG7R49Z/ref=as_li_qf_asin_il_tl?ie=UTF8&tag=filamentcol0c-20&creative=9325&linkCode=as2&creativeASIN=B07YG7R49Z&linkId=2cedc029d56d96edeb978936d2e1a65b',
+            'manufacturer': {
+                'name': 'GreenGate3D'
+            },
+            'filament_type': {
+                'name': 'PETG'
+            },
+        },
+        '3abaff': {
+            'color_name': 'Silk Blue',
+            'hex_color': '47B9FC',
+            'amazon_purchase_link': 'https://amzn.to/2mBzqSK',
+            'manufacturer': {
+                'name': 'Mika3D'
+            },
+            'filament_type': {
+                'name': 'PLA'
+            },
+        },
+        '005e9d': {
+            'color_name': 'Cadet Blue',
+            'hex_color': '3E64A4',
+            'amazon_purchase_link': 'https://amzn.to/2LIBD9m',
+            'manufacturer': {
+                'name': 'Paramount 3D'
+            },
+            'filament_type': {
+                'name': 'PLA'
+            },
+        },
+        '585858': {
+            'color_name': 'Iron Composite',
+            'hex_color': '595653',
+            'amazon_purchase_link': 'https://amzn.to/2nKzoIS',
+            'manufacturer': {
+                'name': 'Proto-Pasta'
+            },
+            'filament_type': {
+                'name': 'PLA'
+            },
+        },
+        'ff32ce': {
+            'color_name': 'Island Fuchsia',
+            'hex_color': 'E426A8',
+            'amazon_purchase_link': null,
+            'mfr_purchase_link': 'https://www.3dfuel.com/products/ingeo-pla-island-fuchsia',
+            'manufacturer': {
+                'name': '3D-Fuel'
+            },
+            'filament_type': {
+                'name': 'PLA'
+            },
+        },
+        'fff468': {
+            'color_name': 'Silk Yellow',
+            'hex_color': 'FDEF6B',
+            'amazon_purchase_link': 'https://amzn.to/2kGu08r',
+            'manufacturer': {
+                'name': 'Mika3D'
+            },
+            'filament_type': {
+                'name': 'PLA'
+            },
+        },
+    }
+
     // The API needs hex, but we deal pretty much exclusively here with RGB. We'll convert
     // before we send out, then convert back to RGB when we get a response back.
     // https://stackoverflow.com/a/39077686
@@ -294,6 +364,45 @@
             , (m, r, g, b) => '#' + r + r + g + g + b + b)
             .substring(1).match(/.{2}/g)
             .map(x => parseInt(x, 16))
+
+    function updateFilamentTable(respData) {
+        for (const [key, value] of Object.entries(respData)) {
+            let color = hexToRgb("#" + key)
+            for (layer in data) {
+                if (data[layer].hasOwnProperty('color') === true) {
+                    // the fact that JS can't compare arrays by default is RIDICULOUS
+                    if (JSON.stringify(color) === JSON.stringify(data[layer]['color'])) {
+                        tableRow = document.getElementById(`${layer}Row`);
+                        filamentCell = tableRow.children[1];
+                        filamentColorCell = tableRow.children[2];
+                        buyButton = tableRow.children[3].children[0];
+
+                        filamentCell.innerHTML = `${value['manufacturer']['name']} ${value['color_name']} ${value['filament_type']['name']}`;
+                        filamentColorCell.style.backgroundColor = `#${value["hex_color"]}`;
+                        if (value['amazon_purchase_link']) {
+                            buyButton.classList.remove('disabled');
+                            buyButton.classList.remove('btn-secondary');
+                            buyButton.classList.add('btn-primary');
+                            buyButton.href = value['amazon_purchase_link'];
+                        } else if (value['mfr_purchase_link']) {
+                            buyButton.classList.remove('disabled');
+                            buyButton.classList.remove('btn-secondary');
+                            buyButton.classList.add('btn-primary');
+                            buyButton.href = value['mfr_purchase_link'];
+                        } else {
+                            // We don't have any buy links for it.
+                            buyButton.classList.add('disabled');
+                            buyButton.classList.remove('btn-primary');
+                            buyButton.classList.add('btn-secondary');
+                        }
+                    }
+                }
+            }
+        }
+        filamentTable.style.backgroundColor = "white";
+        filamentTable.style.opacity = 100;
+        spinner.style.display = "none";
+    }
 
     function refreshTable() {
         // TODO: Ways to improve this function:
@@ -321,42 +430,8 @@
         fetch(`https://filamentcolors.xyz/api/swatch/bulk_colormatch/?colors=${colors.join(",")}`)
             .then(response => response.json())
             .then(respData => {
-                for (const [key, value] of Object.entries(respData)) {
-                    let color = hexToRgb("#" + key)
-                    for (layer in data) {
-                        if (data[layer].hasOwnProperty('color') === true) {
-                            // the fact that JS can't compare arrays by default is RIDICULOUS
-                            if (JSON.stringify(color) === JSON.stringify(data[layer]['color'])) {
-                                tableRow = document.getElementById(`${layer}Row`);
-                                filamentCell = tableRow.children[1];
-                                filamentColorCell = tableRow.children[2];
-                                buyButton = tableRow.children[3].children[0];
-
-                                filamentCell.innerHTML = `${value['manufacturer']['name']} ${value['color_name']} ${value['filament_type']['name']}`;
-                                filamentColorCell.style.backgroundColor = `#${value["hex_color"]}`;
-                                if (value['amazon_purchase_link']) {
-                                    buyButton.classList.remove('disabled');
-                                    buyButton.classList.remove('btn-secondary');
-                                    buyButton.classList.add('btn-primary');
-                                    buyButton.href = value['amazon_purchase_link'];
-                                } else if (value['mfr_purchase_link']) {
-                                    buyButton.classList.remove('disabled');
-                                    buyButton.classList.remove('btn-secondary');
-                                    buyButton.classList.add('btn-primary');
-                                    buyButton.href = value['mfr_purchase_link'];
-                                } else {
-                                    // We don't have any buy links for it.
-                                    buyButton.classList.add('disabled');
-                                    buyButton.classList.remove('btn-primary');
-                                    buyButton.classList.add('btn-secondary');
-                                }
-                            }
-                        }
-                    }
-                }
-                filamentTable.style.backgroundColor = "white";
-                filamentTable.style.opacity = 100;
-                spinner.style.display = "none";
+                console.log(respData)
+                updateFilamentTable(respData)
             });
     }
 
@@ -469,7 +544,8 @@
             },
         });
         // force the color wheel to the default checkbox
-        resetColorWheel('clamps')
+        resetColorWheel('clamps');
+        updateFilamentTable(pageDefaultData);
     });
 
 </script>
