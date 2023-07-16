@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
     <title>A second lovely little test page!</title>
@@ -144,15 +145,15 @@
                     </tr>
                     <tr id="earpadsRow">
                         <th scope="row">Earpads</th>
-                        <td>Unknown</td>
+                        <td>Not Printable</td>
                         <td></td>
-                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                        <td></td>
                     </tr>
                     <tr id="headbandRow">
                         <th scope="row">Headband</th>
-                        <td>Unknown</td>
+                        <td>Not Printable</td>
                         <td></td>
-                        <td><a href="#" target="_blank" class="btn btn-secondary btn-sm disabled">Buy here!</a></td>
+                        <td></td>
                     </tr>
                     <tr id="springRow">
                         <th scope="row">Spring</th>
@@ -164,6 +165,9 @@
                 </table>
             </div>
             <div class="text-center">
+                <a href="https://filamentcolors.xyz/library/collection/95,327,331,1035,899,1079" id="collectionButton" class="btn btn-primary">Save Filament Collection</a>
+            </div>
+            <div class="text-center mt-2">
                 <span class="text-muted">Buy links use Amazon Affliate links when available.</span>
             </div>
 
@@ -235,49 +239,61 @@
             'src': 'images/clamps_small.png',
             'canvas': 'canvasClamps',
             'color': [0, 94, 157],
-            'zIndex': 1
+            'zIndex': 1,
+            'isPrintable': true,
+            'material': 'petg',
         },
         'coneCenters': {
             'img': 'imgConeCenters',
             'src': 'images/cone_centers_small.png',
             'canvas': 'canvasConeCenters',
             'color': [255, 50, 206],
-            'zIndex': 2
+            'zIndex': 2,
+            'isPrintable': true,
+            'material': 'any'
         },
         'cones': {
             'img': 'imgCones',
             'src': 'images/cones_small.png',
             'canvas': 'canvasCones',
             'color': [58, 186, 255],
-            'zIndex': 3
+            'zIndex': 3,
+            'isPrintable': true,
+            'material': 'pla',
         },
         'covers': {
             'img': 'imgCovers',
             'src': 'images/covers_small.png',
             'canvas': 'canvasCovers',
             'color': [10, 10, 10],
-            'zIndex': 4
+            'zIndex': 4,
+            'isPrintable': true,
+            'material': 'any',
         },
         'earpads': {
             'img': 'imgEarpads',
             'src': 'images/earpads_small.png',
             'canvas': 'canvasEarpads',
             'color': [10, 10, 10],
-            'zIndex': 5
+            'zIndex': 5,
+            'isPrintable': false
         },
         'headband': {
             'img': 'imgHeadband',
             'src': 'images/headband_small.png',
             'canvas': 'canvasHeadband',
             'color': [88, 88, 88],
-            'zIndex': 6
+            'zIndex': 6,
+            'isPrintable': false,
         },
         'spring': {
             'img': 'imgSpring',
             'src': 'images/spring_small.png',
             'canvas': 'canvasSpring',
             'color': [255, 244, 104],
-            'zIndex': 7
+            'zIndex': 7,
+            'isPrintable': true,
+            'material': 'petg',
         }
     }
 
@@ -310,17 +326,6 @@
             'amazon_purchase_link': 'https://amzn.to/2LIBD9m',
             'manufacturer': {
                 'name': 'Paramount 3D'
-            },
-            'filament_type': {
-                'name': 'PLA'
-            },
-        },
-        '585858': {
-            'color_name': 'Iron Composite',
-            'hex_color': '595653',
-            'amazon_purchase_link': 'https://amzn.to/2nKzoIS',
-            'manufacturer': {
-                'name': 'Proto-Pasta'
             },
             'filament_type': {
                 'name': 'PLA'
@@ -369,7 +374,7 @@
         for (const [key, value] of Object.entries(respData)) {
             let color = hexToRgb("#" + key)
             for (layer in data) {
-                if (data[layer].hasOwnProperty('color') === true) {
+                if (data[layer].hasOwnProperty('color') === true && data[layer]['isPrintable'] === true) {
                     // the fact that JS can't compare arrays by default is RIDICULOUS
                     if (JSON.stringify(color) === JSON.stringify(data[layer]['color'])) {
                         tableRow = document.getElementById(`${layer}Row`);
@@ -404,6 +409,16 @@
         spinner.style.display = "none";
     }
 
+    function updateCollectionButton(respData) {
+        console.log(respData);
+        const ids = [];
+        for (const [key, value] of Object.entries(respData)) {
+            ids.push(value.id);
+            console.log(value.id)
+        }
+        document.getElementById("collectionButton").href = `https://filamentcolors.xyz/library/collection/${ids.join(",")}`;
+    }
+
     function refreshTable() {
         // TODO: Ways to improve this function:
         //
@@ -421,17 +436,23 @@
         spinner.style.display = null;
 
         let colors = [];
+        let materials = [];
         for (key in data) {
             if (data[key].hasOwnProperty('color')) {
                 colors.push(rgbToHex(...data[key]['color']))
             }
+            if (data[key].hasOwnProperty('material')) {
+                materials.push(data[key]['material'])
+            } else {
+                materials.push("any")
+            }
         }
 
-        fetch(`https://filamentcolors.xyz/api/swatch/bulk_colormatch/?colors=${colors.join(",")}`)
+        fetch(`https://filamentcolors.xyz/api/swatch/bulk_colormatch/?colors=${colors.join(",")}&materials=${materials.join(",")}`)
             .then(response => response.json())
             .then(respData => {
-                console.log(respData)
-                updateFilamentTable(respData)
+                updateCollectionButton(respData);
+                updateFilamentTable(respData);
             });
     }
 
